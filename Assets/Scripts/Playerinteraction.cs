@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -22,8 +23,29 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-    private void IntercationRay() { }
+        IntercationRay();
 
+    }
+    private void IntercationRay()
+    {
+
+        Ray ray = mainCamera.ViewportPointToRay(Vector3.one / 2);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo, InteractionRange))
+        {
+            iinteractable iinteractable = hitInfo.collider.GetComponent<iinteractable>();
+            if (iinteractable != null)
+            {
+                Ui_InteractionText.text = iinteractable.GetDescription();
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    iinteractable.Intercat();
+                }
+            }
+
+        }
+        Ui_Interaction.SetActive(false);
+
+
+    }
 }
